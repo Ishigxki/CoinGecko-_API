@@ -1,5 +1,6 @@
 from database import connection, cursor
 
+
 def test_db():
     try:
         cursor.execute("SELECT * FROM crypto_prices;")
