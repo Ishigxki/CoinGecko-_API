@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 @app.get("/latest")
+@app.get("/history/{coin}")
 
 
 def get_latest():
