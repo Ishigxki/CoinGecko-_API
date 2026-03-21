@@ -5,6 +5,30 @@ from fastapi import FastAPI
 app = FastAPI()
 @app.get("/latest")
 @app.get("/history/{coin}")
+@app.get("/latest/{coin}")
+
+def get_latest_coin(coin:str):
+    cursor.execute(
+        """
+        SELECT coin, price, timestamp
+        FROM crypto_prices
+        WHERE coin = %s
+        ORDER BY timestamp DESC
+        LIMIT  1;
+
+        """,(coin,))
+    
+    row = cursor.fetchone()
+
+    if row is None:
+        return {"error":"Coin not found"}
+    
+    return {
+        "coin": row[0],
+        "price": row[1],
+         "timestamp": str(row[2])
+    }
+    
 
 
 def get_latest():
@@ -31,7 +55,7 @@ SELECT coin, price, timestamp
         result.append({
             "coin": row[0],
             "price":row[1],
-            "timestamp": str(rows[2])
+            "timestamp": str(row[2])
         })
 
     return {"data":result}
